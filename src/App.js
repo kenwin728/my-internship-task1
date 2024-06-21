@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import RegisterLoginForm from "./components/registerLoginForm";
+import LandingPage from "./components/landingPage";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccounts } from "./features/account/accountSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  const { loggedInAccount } = useSelector((store) => store.login);
+  useEffect(() => {
+    dispatch(getAccounts());
+  }, [dispatch])
+  const isObjectEmpty = (objectName) => {
+    return Object.keys(objectName).length === 0
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      { !isObjectEmpty(loggedInAccount) ? (<LandingPage />) : (<RegisterLoginForm />) }
+    </>
   );
 }
 
